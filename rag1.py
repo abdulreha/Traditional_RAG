@@ -34,13 +34,18 @@ prompt = ChatPromptTemplate.from_messages([
 ])
 
 # 5) Chain
-llm = ChatGoogleGenerativeAI(model="gemini-1.5-flash", temperature=0)
+# 5) Chain - UPDATED MODEL INITIALIZATION
+llm = ChatGoogleGenerativeAI(
+    model="models/gemini-2.5-flash",
+    temperature=0.7
+)
 def format_docs(docs): return "\n\n".join(d.page_content for d in docs)
 
 parallel = RunnableParallel({
     "context": retriever | RunnableLambda(format_docs),
     "question": RunnablePassthrough()
 })
+
 
 chain = parallel | prompt | llm | StrOutputParser()
 
